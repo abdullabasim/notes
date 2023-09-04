@@ -1,0 +1,223 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "main entry point for api",
+        "title": "Notes App",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/api/v1/": {
+            "get": {
+                "description": "Returns a simple message for the main endpoint",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Home endpoint",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/note": {
+            "post": {
+                "description": "Creates a new note with a title and text",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create a new note",
+                "parameters": [
+                    {
+                        "description": "Note object",
+                        "name": "note",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.NoteCreated"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.NoteSerializer"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/note/{id}": {
+            "put": {
+                "description": "Updates an existing note by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update a note",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Note ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated fields",
+                        "name": "models.NoteUpdateFields",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.NoteUpdateFields"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/v1/notes": {
+            "get": {
+                "description": "Retrieves a list of notes with pagination",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get All notes with pagination",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of notes per page",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Note"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes one or more notes by IDs",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete notes",
+                "parameters": [
+                    {
+                        "description": "Delete request",
+                        "name": "noteIds",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.NoteDeleteIds"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "models.Note": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.NoteCreated": {
+            "type": "object",
+            "properties": {
+                "text": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.NoteDeleteIds": {
+            "type": "object",
+            "properties": {
+                "ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "models.NoteSerializer": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "type": "string"
+                },
+                "ID": {
+                    "type": "integer"
+                },
+                "Text": {
+                    "type": "string"
+                },
+                "Title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.NoteUpdateFields": {
+            "type": "object",
+            "properties": {
+                "text": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

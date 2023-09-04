@@ -1,0 +1,11 @@
+database:
+  user: postgres
+  password: TqF7dbvsG
+  dbname: notes_app
+  host: postgres
+  port: 5432
+  sslmode: disable
+
+server:
+  host: "localhost"
+  port: 8080

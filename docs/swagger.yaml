@@ -1,0 +1,146 @@
+basePath: /
+definitions:
+  models.Note:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      text:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.NoteCreated:
+    properties:
+      text:
+        type: string
+      title:
+        type: string
+    type: object
+  models.NoteDeleteIds:
+    properties:
+      ids:
+        items:
+          type: integer
+        type: array
+    type: object
+  models.NoteSerializer:
+    properties:
+      CreatedAt:
+        type: string
+      ID:
+        type: integer
+      Text:
+        type: string
+      Title:
+        type: string
+    type: object
+  models.NoteUpdateFields:
+    properties:
+      text:
+        type: string
+      title:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: main entry point for api
+  title: Notes Task
+  version: "1.0"
+paths:
+  /api/v1/:
+    get:
+      description: Returns a simple message for the main endpoint
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Home endpoint
+  /api/v1/note:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new note with a title and text
+      parameters:
+      - description: Note object
+        in: body
+        name: note
+        required: true
+        schema:
+          $ref: '#/definitions/models.NoteCreated'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.NoteSerializer'
+      summary: Create a new note
+  /api/v1/note/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing note by ID
+      parameters:
+      - description: Note ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated fields
+        in: body
+        name: models.NoteUpdateFields
+        required: true
+        schema:
+          $ref: '#/definitions/models.NoteUpdateFields'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update a note
+  /api/v1/notes:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes one or more notes by IDs
+      parameters:
+      - description: Delete request
+        in: body
+        name: noteIds
+        required: true
+        schema:
+          $ref: '#/definitions/models.NoteDeleteIds'
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete notes
+    get:
+      description: Retrieves a list of notes with pagination
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of notes per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Note'
+            type: array
+      summary: Get All notes with pagination
+swagger: "2.0"
